@@ -1,0 +1,90 @@
+
+h1 {
+  margin: 0;
+  padding: 20px 0;
+  color: black;
+  text-align: center;
+}
+
+
+table.tg {
+  width: 80%; /* Set table width to 80% of the container */
+  margin: 20px auto; /* Center the table and add vertical spacing */
+  border-collapse: collapse; /* Collapse borders for a clean look */
+  border-spacing: 0;
+  font-family: Arial, sans-serif;
+  font-size: 14px; /* Adjust font size for a smaller table */
+}
+
+table.tg th,
+table.tg td {
+  border: 1px solid #ccc; /* Add light gray border */
+  padding: 8px 10px; /* Add padding for better readability */
+  text-align: left; /* Align text to the left */
+}
+
+table.tg th {
+  background-color: #f5f5f5; /* Add light background color for header */
+  font-weight: bold;
+}
+
+table.tg td {
+  background-color: #fff; /* White background for data cells */
+}
+
+.tg-0lax {
+  text-align: left;
+  vertical-align: top;
+}
+
+.center {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.chart-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Adds space between each chart */
+  flex-wrap: nowrap; /* Keeps charts in a single row */
+}
+
+.chart-title {
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.tooltip {
+  position: absolute;
+  text-align: center;
+  width: auto;
+  height: auto;
+  padding: 5px;
+  font-size: 12px;
+  background: lightsteelblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+  opacity: 0;
+}
+
+#charts {
+  display: grid; /* Use a grid layout for better control */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Fit up to 4 graphs */
+  gap: 20px; /* Add spacing between the graphs */
+  justify-items: center; /* Center graphs horizontally */
+}
+
+.chart {
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  width: 100%; /* Adjust width to fit container */
+  max-width: 350px; /* Optional: Set max width for better control */
+}

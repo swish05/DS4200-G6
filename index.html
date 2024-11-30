@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unemployment rate study</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+    
+    <h1> NBA Player Stats Analysis</h1>
+
+    <h3>Introduction</h3>
+
+    <p>Understanding NBA player performance is essential for evaluating 
+      individual contributions and their overall impact on the game. This
+     analysis uses statistical data from the official NBA website's leaderboard 
+      to explore key performance metrics such as points, assists, and rebounds. 
+     These statistics serve as critical indicators of player efficiency, influencing 
+     decisions made by fans, analysts, and team managers alike. </p>
+
+
+    <p>Analyzing player performance metrics provides valuable insights into a player's 
+     strengths and weaknesses, helping predict future performance and enabling 
+      data-driven decisions regarding player contracts, trades, and team compositions. 
+      As professional sports increasingly embrace analytics, particularly in leagues 
+     like the NBA, this project offers a deep dive into the world of sports analytics 
+     by examining player performance through quantitative metrics.</p>
+
+
+    <p>To learn more about NBA player statistics and performance analytics,
+      visit the <a href="https://www.nba.com/stats">NBA's official website</a> or explore 
+      studis like Skinner and Guy's <a href="https://doi.org/10.1371/journal.pone.0136393"
+      >A Method for Using Player Tracking Data in Basketball to Learn Player Skills and 
+      Predict Team Performance</a> and Nguyen et al.'s <a href="https://doi.org/10.1080/24751839.2021.1977066"
+      >The Application of Machine Learning and Deep Learning in Sport: Predicting NBA Players 
+      Performance and Popularity.</a><p>
+
+    <h3>Introduction to the data</h3>
+
+    <p> Our analysis makes use of a dataset from the NBA stats leaders, and it includes the 
+        top-performing players across various categories such as points per game, assists, 
+        rebounds, steals, and blocks starting from 2010 and after. This data contains 
+       roughly 450 records and includes around 22 key attributes. The attributes are listed 
+       in the following table:</p> 
+
+        <div class="center">
+        <table class="tg">
+            <thead>
+              <tr>
+                <th class="tg-0lax">Variable Name</th>
+                <th class="tg-0lax">Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="tg-0lax">player_name</td>
+                <td class="tg-0lax">Name of the player</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">team_abbreviation</td>
+                <td class="tg-0lax">Abbreviated name of the team the player played for (at the end of the season)</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">age</td>
+                <td class="tg-0lax">Age of the player</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">player_height</td>
+                <td class="tg-0lax">Height of the player (in centimeters)</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">player_weight</td>
+                <td class="tg-0lax">Weight of the player (in kilograms)</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">college</td>
+                <td class="tg-0lax">Name of the college the player attended</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">country</td>
+                <td class="tg-0lax">Name of the country the player was born in (not necessarily the nationality)</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">draft_year</td>
+                <td class="tg-0lax">The year the player was drafted</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">draft_round</td>
+                <td class="tg-0lax">The draft round the player was picked</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">draft_number</td>
+                <td class="tg-0lax">The number at which the player was picked in his draft round</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">gp</td>
+                <td class="tg-0lax">Games played throughout the season</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">pts</td>
+                <td class="tg-0lax">Average number of points scored</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">reb</td>
+                <td class="tg-0lax">Average number of rebounds grabbed</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">ast</td>
+                <td class="tg-0lax">Average number of assists distributed</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">net_rating</td>
+                <td class="tg-0lax">Team's point differential per 100 possessions while the player is on the court</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">oreb_pct</td>
+                <td class="tg-0lax">Percentage of available offensive rebounds the player grabbed while he was on the floor</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">dreb_pct</td>
+                <td class="tg-0lax">Percentage of available defensive rebounds the player grabbed while he was on the floor</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">usg_pct</td>
+                <td class="tg-0lax">Percentage of team plays used by the player while he was on the floor (FGA + Possession Ending FTA + TO) / POSS</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">ts_pct</td>
+                <td class="tg-0lax">Measure of the player's shooting efficiency that takes into account free throws, 2 and 3 point shots (PTS / (2*(FGA + FTA)))</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">ast_pct</td>
+                <td class="tg-0lax">Percentage of teammate field goals the player assisted while he was on the floor</td>
+              </tr>
+              <tr>
+                <td class="tg-0lax">season</td>
+                <td class="tg-0lax">NBA season</td>
+              </tr>
+            </tbody>
+            </table>
+        </div>
+        <p> Understanding NBA player performance is essential for evaluating individual contributions and their overall 
+            impact on the game. This analysis uses statistical data from the official NBA website's leaderboard to 
+            explore key performance metrics such as points, assists, and rebounds. These statistics serve as critical 
+            indicators of player efficiency, influencing decisions made by fans, analysts, and team managers alike. 
+            In order to better evaluate the player stats, below are interactive charts that allow for user to select 
+            which team and player stats they want to see.
+        </p>
+
+        <h3>Team and Player Selection</h3>
+        <div id="controls">
+          <label for="teamSelect">Select a Team:</label>
+          <select id="teamSelect"></select>
+      
+          <label for="playerSelect">Select a Player:</label>
+          <select id="playerSelect"></select>
+        </div>
+      
+        <h3>Player Performance Charts</h3>
+        <div id="charts"></div>
+      
+        <script src="script.js"></script>
+
+</body>
+</html>
