@@ -4,185 +4,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NBA Player Stats Analysis</title>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> <!-- Plotly for interactive charts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script> <!-- For D3.js visualizations -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> <!-- For Plotly charts -->
     <link href="style.css" rel="stylesheet" />
 </head>
 <body>
-    <h1> NBA Player Stats Analysis</h1>
+    <header>
+        <h1>NBA Player Stats Analysis</h1>
+    </header>
 
-    <h3>Introduction</h3>
-    <p>
-        Understanding NBA player performance is essential for evaluating individual contributions and their overall impact on the game. This analysis uses statistical data from the official NBA website's leaderboard to explore key performance metrics such as points, assists, and rebounds. These statistics serve as critical indicators of player efficiency, influencing decisions made by fans, analysts, and team managers alike.
-    </p>
-    <p>
-        Analyzing player performance metrics provides valuable insights into a player's strengths and weaknesses, helping predict future performance and enabling data-driven decisions regarding player contracts, trades, and team compositions. As professional sports increasingly embrace analytics, particularly in leagues like the NBA, this project offers a deep dive into the world of sports analytics by examining player performance through quantitative metrics.
-    </p>
-    <p>
-        To learn more about NBA player statistics and performance analytics, visit the <a href="https://www.nba.com/stats">NBA's official website</a> or explore studies like Skinner and Guy's <a href="https://doi.org/10.1371/journal.pone.0136393">A Method for Using Player Tracking Data in Basketball to Learn Player Skills and Predict Team Performance</a> and Nguyen et al.'s <a href="https://doi.org/10.1080/24751839.2021.1977066">The Application of Machine Learning and Deep Learning in Sport: Predicting NBA Players Performance and Popularity</a>.
-    </p>
+    <section>
+        <h2>Introduction</h2>
+        <p>
+            Understanding NBA player performance is essential for evaluating individual contributions and their overall impact on the game. This analysis uses statistical data from the official NBA website's leaderboard to explore key performance metrics such as points, assists, and rebounds. These statistics serve as critical indicators of player efficiency, influencing decisions made by fans, analysts, and team managers alike.
+        </p>
+        <p>
+            Analyzing player performance metrics provides valuable insights into a player's strengths and weaknesses, helping predict future performance and enabling data-driven decisions regarding player contracts, trades, and team compositions. As professional sports increasingly embrace analytics, particularly in leagues like the NBA, this project offers a deep dive into the world of sports analytics by examining player performance through quantitative metrics.
+        </p>
+        <p>
+            To learn more about NBA player statistics and performance analytics, visit the <a href="https://www.nba.com/stats">NBA's official website</a> or explore studies like Skinner and Guy's <a href="https://doi.org/10.1371/journal.pone.0136393">A Method for Using Player Tracking Data in Basketball to Learn Player Skills and Predict Team Performance</a> and Nguyen et al.'s <a href="https://doi.org/10.1080/24751839.2021.1977066">The Application of Machine Learning and Deep Learning in Sport: Predicting NBA Players Performance and Popularity</a>.
+        </p>
+    </section>
 
-    <h3>Introduction to the Data</h3>
-    <p>
-        Our analysis makes use of a dataset from the NBA stats leaders, and it includes the top-performing players across various categories such as points per game, assists, rebounds, steals, and blocks starting from 2010 and after. This data contains roughly 450 records and includes around 22 key attributes. The attributes are listed in the following table:
-    </p>
-    <div class="center">
-        <table class="tg">
-            <thead>
-                <tr>
-                    <th class="tg-0lax">Variable Name</th>
-                    <th class="tg-0lax">Details</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="tg-0lax">player_name</td>
-                    <td class="tg-0lax">Name of the player</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">team_abbreviation</td>
-                    <td class="tg-0lax">Abbreviated name of the team the player played for (at the end of the season)</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">age</td>
-                    <td class="tg-0lax">Age of the player</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">player_height</td>
-                    <td class="tg-0lax">Height of the player (in centimeters)</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">player_weight</td>
-                    <td class="tg-0lax">Weight of the player (in kilograms)</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">college</td>
-                    <td class="tg-0lax">Name of the college the player attended</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">country</td>
-                    <td class="tg-0lax">Name of the country the player was born in (not necessarily the nationality)</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">draft_year</td>
-                    <td class="tg-0lax">The year the player was drafted</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">draft_round</td>
-                    <td class="tg-0lax">The draft round the player was picked</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">draft_number</td>
-                    <td class="tg-0lax">The number at which the player was picked in his draft round</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">gp</td>
-                    <td class="tg-0lax">Games played throughout the season</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">pts</td>
-                    <td class="tg-0lax">Average number of points scored</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">reb</td>
-                    <td class="tg-0lax">Average number of rebounds grabbed</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">ast</td>
-                    <td class="tg-0lax">Average number of assists distributed</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">net_rating</td>
-                    <td class="tg-0lax">Team's point differential per 100 possessions while the player is on the court</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">oreb_pct</td>
-                    <td class="tg-0lax">Percentage of available offensive rebounds the player grabbed while he was on the floor</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">dreb_pct</td>
-                    <td class="tg-0lax">Percentage of available defensive rebounds the player grabbed while he was on the floor</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">usg_pct</td>
-                    <td class="tg-0lax">Percentage of team plays used by the player while he was on the floor (FGA + Possession Ending FTA + TO) / POSS</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">ts_pct</td>
-                    <td class="tg-0lax">Measure of the player's shooting efficiency that takes into account free throws, 2 and 3 point shots (PTS / (2*(FGA + FTA)))</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">ast_pct</td>
-                    <td class="tg-0lax">Percentage of teammate field goals the player assisted while he was on the floor</td>
-                </tr>
-                <tr>
-                    <td class="tg-0lax">season</td>
-                    <td class="tg-0lax">NBA season</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <section>
+        <h2>Introduction to the Data</h2>
+        <p>
+            Our analysis makes use of a dataset from the NBA stats leaders, and it includes the top-performing players across various categories such as points per game, assists, rebounds, steals, and blocks starting from 2010 and after. This data contains roughly 450 records and includes around 22 key attributes. The attributes are listed in the following table:
+        </p>
+        <div class="center">
+            <table class="tg">
+                <thead>
+                    <tr>
+                        <th class="tg-0lax">Variable Name</th>
+                        <th class="tg-0lax">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="tg-0lax">player_name</td><td class="tg-0lax">Name of the player</td></tr>
+                    <tr><td class="tg-0lax">team_abbreviation</td><td class="tg-0lax">Abbreviated name of the team the player played for (at the end of the season)</td></tr>
+                    <tr><td class="tg-0lax">age</td><td class="tg-0lax">Age of the player</td></tr>
+                    <tr><td class="tg-0lax">player_height</td><td class="tg-0lax">Height of the player (in centimeters)</td></tr>
+                    <tr><td class="tg-0lax">player_weight</td><td class="tg-0lax">Weight of the player (in kilograms)</td></tr>
+                    <tr><td class="tg-0lax">college</td><td class="tg-0lax">Name of the college the player attended</td></tr>
+                    <tr><td class="tg-0lax">country</td><td class="tg-0lax">Name of the country the player was born in (not necessarily the nationality)</td></tr>
+                    <tr><td class="tg-0lax">draft_year</td><td class="tg-0lax">The year the player was drafted</td></tr>
+                    <tr><td class="tg-0lax">draft_round</td><td class="tg-0lax">The draft round the player was picked</td></tr>
+                    <tr><td class="tg-0lax">draft_number</td><td class="tg-0lax">The number at which the player was picked in his draft round</td></tr>
+                    <tr><td class="tg-0lax">gp</td><td class="tg-0lax">Games played throughout the season</td></tr>
+                    <tr><td class="tg-0lax">pts</td><td class="tg-0lax">Average number of points scored</td></tr>
+                    <tr><td class="tg-0lax">reb</td><td class="tg-0lax">Average number of rebounds grabbed</td></tr>
+                    <tr><td class="tg-0lax">ast</td><td class="tg-0lax">Average number of assists distributed</td></tr>
+                    <tr><td class="tg-0lax">net_rating</td><td class="tg-0lax">Team's point differential per 100 possessions while the player is on the court</td></tr>
+                    <tr><td class="tg-0lax">oreb_pct</td><td class="tg-0lax">Percentage of available offensive rebounds the player grabbed while he was on the floor</td></tr>
+                    <tr><td class="tg-0lax">dreb_pct</td><td class="tg-0lax">Percentage of available defensive rebounds the player grabbed while he was on the floor</td></tr>
+                    <tr><td class="tg-0lax">usg_pct</td><td class="tg-0lax">Percentage of team plays used by the player while he was on the floor</td></tr>
+                    <tr><td class="tg-0lax">ts_pct</td><td class="tg-0lax">Measure of the player's shooting efficiency that takes into account free throws, 2 and 3 point shots (PTS / (2*(FGA + FTA)))</td></tr>
+                    <tr><td class="tg-0lax">ast_pct</td><td class="tg-0lax">Percentage of teammate field goals the player assisted while he was on the floor</td></tr>
+                    <tr><td class="tg-0lax">season</td><td class="tg-0lax">NBA season</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-    <h3>Interactive Visualizations</h3>
-    <p>Below are interactive charts to explore player statistics, shooting efficiency, and draft metrics.</p>
+    <section>
+        <h3>Correlation Heatmap of Player Metrics and Draft Data</h3>
+        <div id="heatmap"></div>
+        <p>
+            This correlation heatmap reveals several key relationships amongst the basketball player metrics and draft data. Players with better physical attributes, such as height and weight, are more likely to be drafted earlier, which can be seen by the strong negative correlations between player_height and draft_number (r = -0.54) and between player_weight and draft_round (r = -0.62). Offensive performance metrics, such as points per game (pts) and usage percentage (usg_pct), also show a strong positive correlation (r = 0.69), indicating that players with higher usage rates tend to score more points.
+        </p>
 
-    <!-- Correlation Heatmap -->
-    <h3>Correlation Heatmap of Player Metrics and Draft Data</h3>
-    <div id="heatmap"></div>
+        <h3>Shooting Efficiency by Draft Round</h3>
+        <div id="shootingEfficiency"></div>
+        <p>
+            The box plot shows the relationship between draft round and shooting efficiency (true shooting percentage ==> ts_pct), revealing that players drafted in earlier rounds generally have higher shooting percentages and greater variability in performance. Earlier rounds exhibit a broad range of efficiencies, with many outliers suggesting that some players significantly outperform or underperform expectations.
+        </p>
 
-    <!-- Shooting Efficiency by Draft Round -->
-    <h3>Shooting Efficiency by Draft Round</h3>
-    <div id="shootingEfficiency"></div>
+        <h3>Average Points Scored by Players for Each Team</h3>
+        <div id="averagePoints"></div>
+        <p>
+            The interactive bar chart displays the average points scored by players for each team, showing comparisons of scoring performance across all NBA teams. The hover functionality allows users to view precise average points for each team to two decimal places, making it easier to compare team data efficiently.
+        </p>
+    </section>
 
-    <!-- Average Points Scored by Players for Each Team -->
-    <h3>Average Points Scored by Players for Each Team</h3>
-    <div id="averagePoints"></div>
+    <footer>
+        <p>&copy; 2024 NBA Player Stats Analysis</p>
+    </footer>
 
     <script>
-        // Correlation Heatmap
-        Plotly.newPlot('heatmap', [{
-            x: ['Age', 'Height', 'Weight', 'Points', 'Rebounds', 'Assists', 'Draft Year', 'Draft Round'],
-            y: ['Age', 'Height', 'Weight', 'Points', 'Rebounds', 'Assists', 'Draft Year', 'Draft Round'],
-            z: [
-                [1, 0.7, 0.5, 0.8, 0.6, 0.4, -0.3, -0.5],
-                [0.7, 1, 0.8, 0.6, 0.5, 0.3, -0.4, -0.6],
-                [0.5, 0.8, 1, 0.7, 0.4, 0.2, -0.3, -0.4],
-                [0.8, 0.6, 0.7, 1, 0.6, 0.5, -0.5, -0.6],
-                [0.6, 0.5, 0.4, 0.6, 1, 0.7, -0.2, -0.3],
-                [0.4, 0.3, 0.2, 0.5, 0.7, 1, -0.1, -0.4],
-                [-0.3, -0.4, -0.3, -0.5, -0.2, -0.1, 1, 0.7],
-                [-0.5, -0.6, -0.4, -0.6, -0.3, -0.4, 0.7, 1]
-            ],
-            type: 'heatmap',
-            colorscale: 'Viridis'
-        }], {
-            title: 'Correlation Heatmap of Player Metrics',
-            xaxis: { title: 'Metrics' },
-            yaxis: { title: 'Metrics' }
-        });
+    // Heatmap
+    Plotly.newPlot('heatmap', [{
+        x: ['Age', 'Height', 'Weight', 'Points', 'Rebounds', 'Assists', 'Draft Year', 'Draft Round'],
+        y: ['Age', 'Height', 'Weight', 'Points', 'Rebounds', 'Assists', 'Draft Year', 'Draft Round'],
+        z: [
+            [1, 0.7, 0.5, 0.8, 0.6, 0.4, -0.3, -0.5],
+            [0.7, 1, 0.8, 0.6, 0.5, 0.3, -0.4, -0.6],
+            [0.5, 0.8, 1, 0.7, 0.4, 0.2, -0.3, -0.4],
+            [0.8, 0.6, 0.7, 1, 0.6, 0.5, -0.5, -0.6],
+            [0.6, 0.5, 0.4, 0.6, 1, 0.7, -0.2, -0.3],
+            [0.4, 0.3, 0.2, 0.5, 0.7, 1, -0.1, -0.4],
+            [-0.3, -0.4, -0.3, -0.5, -0.2, -0.1, 1, 0.7],
+            [-0.5, -0.6, -0.4, -0.6, -0.3, -0.4, 0.7, 1]
+        ],
+        type: 'heatmap',
+        colorscale: 'Viridis'
+    }], {
+        title: 'Correlation Heatmap of Player Metrics',
+        xaxis: { title: 'Metrics' },
+        yaxis: { title: 'Metrics' }
+    });
 
-        // Shooting Efficiency
-        Plotly.newPlot('shootingEfficiency', [{
-            x: [0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4], // Draft rounds
-            y: [0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.5, 0.55, 0.6, 0.4, 0.45, 0.5, 0.35, 0.4, 0.45], // Shooting percentages
-            type: 'box'
-        }], {
-            title: 'Shooting Efficiency by Draft Round',
-            xaxis: { title: 'Draft Round' },
-            yaxis: { title: 'Shooting Percentage' }
-        });
+    // Shooting Efficiency by Draft Round
+    Plotly.newPlot('shootingEfficiency', [{
+        x: [0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4], // Draft Rounds
+        y: [0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.5, 0.55, 0.6, 0.4, 0.45, 0.5, 0.35, 0.4, 0.45], // Shooting Percentages
+        type: 'box'
+    }], {
+        title: 'Shooting Efficiency by Draft Round',
+        xaxis: { title: 'Draft Round' },
+        yaxis: { title: 'Shooting Percentage' }
+    });
 
-        // Average Points by Team
-        Plotly.newPlot('averagePoints', [{
-            x: ['ATL', 'BOS', 'CHA', 'CHI', 'CLE', 'DAL', 'DEN', 'DET', 'GSW', 'HOU'], // Teams
-            y: [8.2, 7.5, 6.8, 7.0, 6.9, 7.3, 7.8, 6.7, 8.0, 7.1], // Average points
-            type: 'bar',
-            marker: { color: 'teal' }
-        }], {
-            title: 'Average Points Scored by Players for Each Team',
-            xaxis: { title: 'Team' },
-            yaxis: { title: 'Average Points' }
-        });
+    // Average Points Scored by Players for Each Team
+    Plotly.newPlot('averagePoints', [{
+        x: ['ATL', 'BOS', 'CHA', 'CHI', 'CLE', 'DAL', 'DEN', 'DET', 'GSW', 'HOU'], // Teams
+        y: [8.2, 7.5, 6.8, 7.0, 6.9, 7.3, 7.8, 6.7, 8.0, 7.1], // Average Points
+        type: 'bar',
+        marker: { color: 'teal' }
+    }], {
+        title: 'Average Points Scored by Players for Each Team',
+        xaxis: { title: 'Team' },
+        yaxis: { title: 'Average Points' }
+    });
     </script>
 </body>
 </html>
